@@ -3,8 +3,10 @@ package org.katas.refactoring;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class OrderReceiptTest {
@@ -38,4 +40,37 @@ public class OrderReceiptTest {
         );
     }
 
+    @Test
+    void should_order_created_return_order_customer_name() {
+        Order customerInformation = createOrder();
+
+        assertEquals("SpongeBob", customerInformation.getCustomerName());
+    }
+
+    @Test
+    void should_order_created_return_order_customer_Address() {
+        Order customerInformation = createOrder();
+
+        assertEquals("Bikini Bottom", customerInformation.getCustomerAddress());
+    }
+
+    @Test
+    void should_return_total_when_item_list_has_items() {
+        Order order = createOrder();
+        OrderReceipt orderReceipt = new OrderReceipt(order);
+
+        assertEquals("<======Printing Orders======\n"+
+        "SpongeBobBikini BottomApple	12.0	2	24.0\n"+
+        "Sales Tax	2.4000000000000004Total Amount	26.4>", orderReceipt.printReceipt());
+    }
+
+    private Order createOrder() {
+        String customerName = "SpongeBob";
+        String customerAddress = "Bikini Bottom";
+        List<LineItem> lineItemList = new ArrayList<>();
+        LineItem lineItem = new LineItem("Apple", 12.0, 2);
+        lineItemList.add(lineItem);
+
+        return new Order(customerName, customerAddress, lineItemList);
+    }
 }
